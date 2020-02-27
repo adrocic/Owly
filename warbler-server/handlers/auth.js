@@ -13,6 +13,7 @@ export const signupHandler = async function(req, res, next) {
         user,
         profileImageUrl,
       },
+      // eslint-disable-next-line no-undef
       process.env.SECRET_KEY
     );
     return res.status(201).json({
