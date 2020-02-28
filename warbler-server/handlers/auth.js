@@ -1,7 +1,40 @@
 import * as db from '../models/index.js';
 import jwt from 'jsonwebtoken';
 
-export const loginHandler = function() {};
+export const loginHandler = async function(req, res) {
+  try {
+    const user = await db.User.findOne({
+      email: req.body.email,
+    });
+    const { id, username, profileImageUrl } = user;
+    const isMatch = await user.comparePassword(req.body.password);
+    if (isMatch) {
+      const token = jwt.sign(
+        {
+          id,
+          username,
+          profileImageUrl,
+        },
+        // eslint-disable-next-line no-undef
+        process.env.SECRET_KEY
+      );
+      return res.status(200).json({
+        id,
+        username,
+        profileImageUrl,
+        token,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ status: 400, message: 'Invalid Email and/or Password.' });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ status: 400, message: 'Invalid Email and/or Password' });
+  }
+};
 
 export const signupHandler = async function(req, res, next) {
   try {

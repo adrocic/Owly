@@ -22,4 +22,5 @@ db.once('open', function() {
   console.log('connected to database!');
 });
 
-export { default as User } from './user.js';
+export { User } from './user.js';
+export { Message } from './message.js';

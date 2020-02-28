@@ -20,10 +20,17 @@ const UserSchema = new Schema({
   profileImageUrl: {
     type: String,
   },
+  messages: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Message',
+    },
+  ],
 });
 
 // Hook into the userSchema right before a 'save' and check to see if the password exists, if it does, hash it, and save it
 UserSchema.pre('save', async function(next) {
+  console.log('This object inside of UserSchema.pre: ' + this);
   try {
     if (!this.isModified('password')) {
       return next();
@@ -37,7 +44,7 @@ UserSchema.pre('save', async function(next) {
 });
 
 // providing an outside method with access to the current password being saved as 'this' and uses bcrypt.compare method to check if the re-hashed password and the previously hashed password match
-UserSchema.method.comparePassword = async function(candidatePassword, next) {
+UserSchema.methods.comparePassword = async function(candidatePassword, next) {
   try {
     const isMatch = await bcrypt.compare(candidatePassword, this.password);
     return isMatch;
@@ -46,6 +53,4 @@ UserSchema.method.comparePassword = async function(candidatePassword, next) {
   }
 };
 
-const User = mongoose.model('User', UserSchema);
-
-export default User;
+export const User = mongoose.model('User', UserSchema);
