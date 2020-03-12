@@ -8,13 +8,14 @@ const app = express();
 import authRouter from './routes/auth.js';
 import messagesRouter from './routes/messages.js';
 import errorHandler from './handlers/error.js';
+import { authenticate, authorize } from './middleware/auth.js';
 
 // Use cors and body parser
 app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRouter);
-app.use('/api/users/:id/messages', messagesRouter);
+app.use('/api/users/:id/messages', authenticate, authorize, messagesRouter);
 
 // Catch 404 not found
 app.use(function(req, res, next) {
