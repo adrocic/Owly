@@ -1,7 +1,7 @@
 import * as db from '../models/index.js';
 import jwt from 'jsonwebtoken';
 
-export const loginHandler = async function(req, res) {
+export const loginHandler = async function(req, res, next) {
   try {
     const user = await db.User.findOne({
       email: req.body.email,
@@ -25,14 +25,10 @@ export const loginHandler = async function(req, res) {
         token,
       });
     } else {
-      return res
-        .status(400)
-        .json({ status: 400, message: 'Invalid Email and/or Password.' });
+      return next({ status: 400, message: 'Invalid Email and/or Password' });
     }
   } catch (err) {
-    return res
-      .status(400)
-      .json({ status: 400, message: 'Invalid Email and/or Password' });
+    return next({ status: 400, message: 'Invalid Email and/or Password' });
   }
 };
 

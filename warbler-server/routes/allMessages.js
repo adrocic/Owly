@@ -3,6 +3,6 @@ const allMessagesRouter = express.Router({ mergeParams: true });
 
 import { getAllMessages } from '../handlers/allMessages.js';
 
-allMessagesRouter.route('/').get(getAllMessages);
+allMessagesRouter.get('/', getAllMessages);
 
 export default allMessagesRouter;

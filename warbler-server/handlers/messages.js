@@ -7,7 +7,7 @@ export const createMessage = async function(req, res, next) {
       user: req.params.id,
     });
     const foundUser = await db.User.findById(req.params.id);
-    foundUser.messages.push(message.id);
+    foundUser.messages.push(message._id);
     await foundUser.save();
     const foundMessage = await db.Message.findById(message._id).populate(
       'user',
@@ -22,7 +22,7 @@ export const createMessage = async function(req, res, next) {
 // /api/users/:id/messages/:id
 export const getMessage = async function(req, res, next) {
   try {
-    const message = db.Message.find(req.params.message_id);
+    const message = await db.Message.findById(req.params.message_id);
     return res.status(200).json(message);
   } catch (error) {
     return next(error);

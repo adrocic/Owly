@@ -6,10 +6,8 @@ import {
   deleteMessage,
 } from '../handlers/messages.js';
 
-messagesRouter.route('/').get(createMessage);
-messagesRouter
-  .route('/:message_id')
-  .get(getMessage)
-  .delete(deleteMessage);
+messagesRouter.post('/', createMessage);
+messagesRouter.get('/:message_id', getMessage);
+messagesRouter.delete('/:message_id', deleteMessage);
 
 export default messagesRouter;
