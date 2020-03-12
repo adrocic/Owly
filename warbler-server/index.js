@@ -7,6 +7,7 @@ const app = express();
 
 import authRouter from './routes/auth.js';
 import messagesRouter from './routes/messages.js';
+import allMessagesRouter from './routes/allMessages.js';
 import errorHandler from './handlers/error.js';
 import { authenticate, authorize } from './middleware/auth.js';
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRouter);
 app.use('/api/users/:id/messages', authenticate, authorize, messagesRouter);
+app.use('/api/messages', authenticate, allMessagesRouter);
 
 // Catch 404 not found
 app.use(function(req, res, next) {

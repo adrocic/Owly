@@ -1,17 +1,22 @@
 import mongoose from 'mongoose';
 import { User } from './user.js';
 
-const MessageSchema = new mongoose.Schema({
-  text: {
-    type: String,
-    required: true,
-    maxLength: 160,
+const MessageSchema = new mongoose.Schema(
+  {
+    text: {
+      type: String,
+      required: true,
+      maxLength: 160,
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 MessageSchema.pre('remove', async function(next) {
   try {

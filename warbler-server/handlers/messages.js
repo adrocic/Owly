@@ -19,6 +19,26 @@ export const createMessage = async function(req, res, next) {
   }
 };
 
+// /api/users/:id/messages/:id
+export const getMessage = async function(req, res, next) {
+  try {
+    const message = db.Message.find(req.params.message_id);
+    return res.status(200).json(message);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const deleteMessage = async function(req, res, next) {
+  try {
+    const foundMessage = await db.Message.findById(req.params.message_id);
+    await foundMessage.remove();
+    return res.status(200).json(foundMessage);
+  } catch (error) {
+    return next(error);
+  }
+};
+
 // export const getMessage = async function(req, res, next) {};
 
 // export const deleteMessage = async function(req, res, next) {};
